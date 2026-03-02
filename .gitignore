@@ -1,34 +1,69 @@
-HELP.md
+# ┌──────────────────────────────────────────────────────────┐
+# │                  Spring Boot / Java                      │
+# └──────────────────────────────────────────────────────────┘
+
+# Скомпилированные классы и папка сборки
 target/
+
+# Maven
 .mvn
+mvnw
+mvnw.cmd
+
+# Логи
+*.log
+logs/
+
+# ┌──────────────────────────────────────────────────────────┐
+# │                Локальные конфиги и секреты               │
+# └──────────────────────────────────────────────────────────┘
+
+# Файлы окружения
 .env
-!**/src/main/**/target/
-!**/src/test/**/target/
+.env.local
+.env.*
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# ┌──────────────────────────────────────────────────────────┐
+# │                        GIT                               │
+# └──────────────────────────────────────────────────────────┘
 
-### IntelliJ IDEA ###
+.gitattributes
+
+# ┌──────────────────────────────────────────────────────────┐
+# │                       IDE файлы                          │
+# └──────────────────────────────────────────────────────────┘
+
+# IntelliJ IDEA
 .idea
 *.iws
 *.iml
 *.ipr
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
 
-### VS Code ###
+# NetBeans
+nb-configuration.xml
+nbactions.xml
+nbproject/
+
+# VS Code
 .vscode/
+
+# ┌──────────────────────────────────────────────────────────┐
+# │                        Прочее                            │
+# └──────────────────────────────────────────────────────────┘
+
+# Временные файлы
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# OS файлы
+.DS_Store
+Thumbs.db
