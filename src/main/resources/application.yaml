@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Task Maganer
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  datasource:
+    url: jdbc:postgresql://${DB_SERVER}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
