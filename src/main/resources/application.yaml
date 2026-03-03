@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Task Maganer
+    name: Task Manager
   liquibase:
     enabled: true
     change-log: ${CHANGELOG_PATH}
