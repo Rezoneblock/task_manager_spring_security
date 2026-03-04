@@ -11,6 +11,6 @@ public record PageResponse<T>(
             long size,
             long totalElements,
             long totalPages,
-            long number
+            long currentPageNumber
     ) {}
 }
