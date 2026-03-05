@@ -1,11 +1,17 @@
 package com.gordeev.taskmanager.tasks.entity;
 
+import com.gordeev.taskmanager.users.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,6 +28,10 @@ public class Task {
     )
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(nullable = false, length = 100)
     @Size(min = 3, max = 100, message = "Имя задачи должно быть минимум 3 символа и максимум 100 символов")
     private String name;
@@ -31,4 +41,8 @@ public class Task {
     private String description;
 
     private Boolean done = false;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }

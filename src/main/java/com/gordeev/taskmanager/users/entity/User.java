@@ -1,5 +1,6 @@
 package com.gordeev.taskmanager.users.entity;
 
+import com.gordeev.taskmanager.tasks.entity.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -41,6 +43,9 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -48,4 +53,14 @@ public class User {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
+        task.setUser(this);
+    }
+
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+        task.setUser(null);
+    }
 }
