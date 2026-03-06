@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    Boolean existsByName(String name);
+    boolean existsByName(String name);
 
     Page<Task> findByName(String name, Pageable pageable);
 }

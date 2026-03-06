@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TaskService {
-    private static final String TASK_NOT_FOUND = "Задания с именем '%s' не существует";
+    private static final String TASK_NOT_FOUND = "Задания с именем/id '%s' не существует";
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
@@ -53,5 +53,13 @@ public class TaskService {
                         responsePage.getNumber()
                 )
         );
+    }
+
+    public void deleteTask(Long id) {
+        if (!taskRepository.existsById(id)) {
+            throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, id));
+        }
+
+        taskRepository.deleteById(id);
     }
 }

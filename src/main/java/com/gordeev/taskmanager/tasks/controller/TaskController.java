@@ -21,19 +21,26 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<TaskResponse>> createTask(@RequestBody @Valid TaskCreateRequest request) {
-        // Authentication authentication for username
         TaskResponse result = taskService.createTask(request);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<TaskResponse>> getTasks(
+    public ResponseEntity<ApiResponse<PageResponse<TaskResponse>>> getTasks(
             @RequestParam(required = false) String name,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
         PageResponse<TaskResponse> result = taskService.findTasks(name, pageable);
-        return ResponseEntity.ok(result);
+
+        return ResponseEntity.ok(ApiResponse.success(result));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
