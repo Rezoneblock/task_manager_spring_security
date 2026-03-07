@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<UserResponse>>> getUsers(
-            @RequestParam String username,
+            @RequestParam(required = false) String username,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
             ) {
         PageResponse<UserResponse> result = userService.getUsers(username, pageable);

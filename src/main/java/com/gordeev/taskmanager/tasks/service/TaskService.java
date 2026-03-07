@@ -55,6 +55,7 @@ public class TaskService {
         );
     }
 
+    @Transactional
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
             throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, id));
