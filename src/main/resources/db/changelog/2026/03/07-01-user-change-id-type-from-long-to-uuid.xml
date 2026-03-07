@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1772888736211-1" author="gordeev.tv">
+        <addColumn tableName="users">
+            <column name="uuid_id" type="UUID" defaultValueComputed="gen_random_uuid()" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1772888736211-2" author="gordeev.tv">
+        <addColumn tableName="tasks">
+            <column name="user_uuid" type="UUID" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1772888736211-3" author="gordeev.tv">
+        <update tableName="tasks">
+            <column name="user_uuid" valueComputed="(SELECT uuid_id FROM users u WHERE u.id = tasks.user_id)" />
+        </update>
+    </changeSet>
+
+    <changeSet id="1772888736211-4" author="gordeev.tv">
+        <dropForeignKeyConstraint baseTableName="tasks" constraintName="fk_tasks_on_user"/>
+
+<!--     deleted wrong column  =/ -->
+        <dropColumn tableName="tasks" columnName="id" />
+        <dropColumn tableName="users" columnName="id" />
+    </changeSet>
+
+    <changeSet id="1772888736211-4-1" author="gordeev.tv">
+        <dropColumn tableName="tasks" columnName="user_id" />
+    </changeSet>
+
+    <changeSet id="1772888736211-5" author="gordeev.tv">
+        <renameColumn tableName="users" oldColumnName="uuid_id" newColumnName="id" columnDataType="UUID"/>
+        <renameColumn tableName="tasks" oldColumnName="user_uuid" newColumnName="user_id" columnDataType="UUID"/>
+    </changeSet>
+
+<!--    <changeSet id="1772888736211-1" author="gordeev.tv (generated)">-->
+<!--        <dropSequence sequenceName="user_id_seq"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1772888736211-2" author="gordeev.tv (generated)">-->
+<!--        <dropColumn columnName="id" tableName="users"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1772888736211-3" author="gordeev.tv (generated)">-->
+<!--        <addColumn tableName="users">-->
+<!--            <column name="id" type="UUID">-->
+<!--                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users" validateNullable="true"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1772888736211-4" author="gordeev.tv (generated)">-->
+<!--        <dropColumn columnName="user_id" tableName="tasks"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1772888736211-5" author="gordeev.tv (generated)">-->
+<!--        <addColumn tableName="tasks">-->
+<!--            <column name="user_id" type="UUID">-->
+<!--                <constraints foreignKeyName="FK_TASKS_ON_USER" nullable="false" references="users(id)"-->
+<!--                             validateNullable="true"/>-->
+<!--            </column>-->
+<!--        </addColumn>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>

@@ -1,7 +1,9 @@
 package com.gordeev.taskmanager.users.dto;
 
+import java.util.UUID;
+
 public record UserResponse(
-        Long id,
+        UUID id,
         String username,
         String email
 ) {

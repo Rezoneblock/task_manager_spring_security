@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TaskService {
-    private static final String TASK_NOT_FOUND = "Задания с именем/id '%s' не существует";
+    private static final String TASK_NOT_FOUND = "Задания с name/id '%s' не существует";
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
@@ -30,7 +30,7 @@ public class TaskService {
         return taskMapper.toResponse(saved);
     }
 
-    public PageResponse<TaskResponse> findTasks(String name, Pageable pageable) {
+    public PageResponse<TaskResponse> getTasks(String name, Pageable pageable) {
         Page<Task> page;
 
         if (name != null && !name.isEmpty()) {

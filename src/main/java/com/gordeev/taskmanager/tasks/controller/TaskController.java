@@ -31,7 +31,7 @@ public class TaskController {
             @RequestParam(required = false) String name,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        PageResponse<TaskResponse> result = taskService.findTasks(name, pageable);
+        PageResponse<TaskResponse> result = taskService.getTasks(name, pageable);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }
