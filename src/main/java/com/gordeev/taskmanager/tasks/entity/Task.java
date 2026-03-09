@@ -33,11 +33,9 @@ public class Task {
     private User user;
 
     @Column(nullable = false, length = 100)
-    @Size(min = 3, max = 100, message = "Имя задачи должно быть минимум 3 символа и максимум 100 символов")
     private String name;
 
     @Column(length = 500)
-    @Size(max = 500, message = "Описани должно быть максимум 500 символов")
     private String description;
 
     private Boolean done = false;

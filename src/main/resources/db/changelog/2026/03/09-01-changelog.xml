@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+<!--    <changeSet id="1773070518017-3" author="Timak (generated)">-->
+<!--        <addPrimaryKey columnNames="id" constraintName="pk_tasks" tableName="tasks"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-4" author="Timak (generated)">-->
+<!--        <addPrimaryKey columnNames="id" constraintName="pk_users" tableName="users"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-5" author="Timak (generated)">-->
+<!--        <addUniqueConstraint columnNames="email" constraintName="UC_USERS_EMAIL" tableName="users"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-6" author="Timak (generated)">-->
+<!--        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="tasks" constraintName="FK_TASKS_ON_USER"-->
+<!--                                 referencedColumnNames="id" referencedTableName="users"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-7" author="Timak (generated)">-->
+<!--        <dropSequence sequenceName="user_id_seq"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-1" author="Timak (generated)">-->
+<!--        <addNotNullConstraint columnDataType="UUID" columnName="id" tableName="users" validate="true"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="1773070518017-2" author="Timak (generated)">-->
+<!--        <addNotNullConstraint columnDataType="UUID" columnName="user_id" tableName="tasks" validate="true"/>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>

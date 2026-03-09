@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    Boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 
     Page<User> findByUsername(String username, Pageable pageable);
 }

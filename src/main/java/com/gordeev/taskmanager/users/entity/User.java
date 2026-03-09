@@ -26,16 +26,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Size(min = 8, max = 20, message = "Имя пользователя должно быть от 5 до 20 символов")
     @Column(nullable = false, length = 20)
     private String username;
 
     @Column(nullable = false, length = 20)
-    @Size(min = 8, max = 20, message = "Пароль должен быть от 8 до 20 символов")
     private String password;
 
-    @Email
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -20,8 +20,9 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
-    private static final String USER_NOT_FOUND = "Пользователя с username/id '%s' не существует";
-    private static final String USER_ALREADY_EXISTS = "Пользователь с username/id '%s' уже существует";
+    private static final String USER_NOT_FOUND = "Такого пользователя не существует";
+    private static final String USER_ALREADY_EXISTS = "Пользователь уже существует";
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -31,7 +32,7 @@ public class UserService {
         if (username != null && !username.isEmpty()) {
             page = userRepository.findByUsername(username, pageable);
             if (page.isEmpty()) {
-                throw new ResourceDoesNotExistException(String.format(USER_NOT_FOUND, username));
+                throw new ResourceDoesNotExistException(USER_NOT_FOUND);
             }
         } else {
             page = userRepository.findAll(pageable);
@@ -54,8 +55,8 @@ public class UserService {
     public UserResponse createUser(UserCreateRequest request) {
         User user = userMapper.toUser(request);
 
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new ResourceAlreadyExistException(String.format(USER_ALREADY_EXISTS, user.getUsername()));
+        if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(request.email())) {
+            throw new ResourceAlreadyExistException(USER_ALREADY_EXISTS);
         }
 
         User savedUser = userRepository.save(user);
@@ -66,7 +67,7 @@ public class UserService {
     @Transactional
     public void deleteUser(UUID id) {
         if (!userRepository.existsById(id)) {
-            throw new ResourceDoesNotExistException(String.format(USER_NOT_FOUND, id));
+            throw new ResourceDoesNotExistException(USER_NOT_FOUND);
         }
 
         userRepository.deleteById(id);

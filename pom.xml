@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gordeev</groupId>
-	<artifactId>taskmaganer</artifactId>
+	<artifactId>taskmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Task Maganer</name>
 	<description>Task Manager API project</description>
