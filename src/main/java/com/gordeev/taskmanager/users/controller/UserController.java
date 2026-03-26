@@ -21,13 +21,6 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<UserResponse>> createUser(@RequestBody @Valid UserCreateRequest request) {
-        UserResponse result = userService.createUser(request);
-
-        return ResponseEntity.ok(ApiResponse.success(result));
-    }
-
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<UserResponse>>> getUsers(
             @RequestParam(required = false) String username,
