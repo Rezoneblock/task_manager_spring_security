@@ -8,7 +8,6 @@ import com.gordeev.taskmanager.tasks.dto.TaskResponse;
 import com.gordeev.taskmanager.tasks.entity.Task;
 import com.gordeev.taskmanager.tasks.mapper.TaskMapper;
 import com.gordeev.taskmanager.tasks.repository.TaskRepository;
-import com.gordeev.taskmanager.users.entity.User;
 import com.gordeev.taskmanager.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,8 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TaskService {
-    private static final String TASK_NOT_FOUND = "Задания с name/id '%s' не существует";
+    private static final String TASK_NOT_FOUND = "Задания с id '%s' не существует";
+
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
@@ -39,17 +39,8 @@ public class TaskService {
         return taskMapper.toResponse(saved, currentUser.getUsername());
     }
 
-    public PageResponse<TaskResponse> getTasks(CustomUserDetails currentUser, String name, Pageable pageable) {
-        Page<Task> page;
-
-        if (name != null && !name.isEmpty()) {
-            page = taskRepository.findByName(name, pageable);
-            if (page.isEmpty()) {
-                throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, name));
-            }
-        } else {
-            page = taskRepository.findByUserId(currentUser.getId(), pageable);
-        }
+    public PageResponse<TaskResponse> getTasks(CustomUserDetails currentUser, Pageable pageable) {
+        Page<Task> page = taskRepository.findByUserId(currentUser.getId(), pageable);
 
         Page<TaskResponse> responsePage = page.map(task -> taskMapper.toResponse(task, currentUser.getUsername()));
 
@@ -62,6 +53,13 @@ public class TaskService {
                         responsePage.getNumber()
                 )
         );
+    }
+
+    public TaskResponse getTask(CustomUserDetails currentUser, Long id) {
+        Task task = taskRepository.findByIdAndUserId(id, currentUser.getId()).orElseThrow(
+                () -> new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, id)));
+
+        return taskMapper.toResponse(task, currentUser.getUsername());
     }
 
     @Transactional

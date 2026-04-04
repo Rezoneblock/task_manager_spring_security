@@ -33,10 +33,16 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<TaskResponse>>> getTasks(
             @AuthenticationPrincipal CustomUserDetails currentUser,
-            @RequestParam(required = false) String name,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        PageResponse<TaskResponse> result = taskService.getTasks(currentUser, name, pageable);
+        PageResponse<TaskResponse> result = taskService.getTasks(currentUser, pageable);
+
+        return ResponseEntity.ok(ApiResponse.success(result));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<TaskResponse>> getTask(@AuthenticationPrincipal CustomUserDetails currentUser, @PathVariable Long id) {
+        TaskResponse result = taskService.getTask(currentUser, id);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }
