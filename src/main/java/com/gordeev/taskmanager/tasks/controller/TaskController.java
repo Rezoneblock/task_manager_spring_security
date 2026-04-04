@@ -11,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -20,18 +23,19 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@RequestBody @Valid TaskCreateRequest request) {
-        TaskResponse result = taskService.createTask(request);
+    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@AuthenticationPrincipal(expression = "id") UUID currentUserId, @RequestBody @Valid TaskCreateRequest request) {
+        TaskResponse result = taskService.createTask(currentUserId, request);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<TaskResponse>>> getTasks(
+            @AuthenticationPrincipal(expression = "id") UUID currentUserId,
             @RequestParam(required = false) String name,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        PageResponse<TaskResponse> result = taskService.getTasks(name, pageable);
+        PageResponse<TaskResponse> result = taskService.getTasks(currentUserId, name, pageable);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }

@@ -7,11 +7,15 @@ import com.gordeev.taskmanager.tasks.dto.TaskResponse;
 import com.gordeev.taskmanager.tasks.entity.Task;
 import com.gordeev.taskmanager.tasks.mapper.TaskMapper;
 import com.gordeev.taskmanager.tasks.repository.TaskRepository;
+import com.gordeev.taskmanager.users.entity.User;
+import com.gordeev.taskmanager.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,18 +23,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaskService {
     private static final String TASK_NOT_FOUND = "Задания с name/id '%s' не существует";
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+
     private final TaskMapper taskMapper;
 
     @Transactional
-    public TaskResponse createTask(TaskCreateRequest request) {
+    public TaskResponse createTask(UUID currentUserId, TaskCreateRequest request) {
         Task task = taskMapper.toTask(request);
+
+        task.setUser(userRepository.getReferenceById(currentUserId));
 
         Task saved = taskRepository.save(task);
 
         return taskMapper.toResponse(saved);
     }
 
-    public PageResponse<TaskResponse> getTasks(String name, Pageable pageable) {
+    public PageResponse<TaskResponse> getTasks(UUID currentUserId, String name, Pageable pageable) {
         Page<Task> page;
 
         if (name != null && !name.isEmpty()) {
@@ -39,7 +47,7 @@ public class TaskService {
                 throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, name));
             }
         } else {
-            page = taskRepository.findAll(pageable);
+            page = taskRepository.findByUserId(currentUserId, pageable);
         }
 
         Page<TaskResponse> responsePage = page.map(taskMapper::toResponse);

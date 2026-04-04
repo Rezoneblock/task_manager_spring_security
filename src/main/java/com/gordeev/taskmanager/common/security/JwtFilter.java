@@ -59,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Ничего ;)
+            // Обязательно регистрируемся и/или проходим авторизацию!!!
         }
 
         chain.doFilter(request, response);
