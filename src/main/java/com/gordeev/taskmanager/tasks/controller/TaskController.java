@@ -2,6 +2,7 @@ package com.gordeev.taskmanager.tasks.controller;
 
 import com.gordeev.taskmanager.common.dto.ApiResponse;
 import com.gordeev.taskmanager.common.dto.PageResponse;
+import com.gordeev.taskmanager.common.security.CustomUserDetails;
 import com.gordeev.taskmanager.tasks.dto.TaskCreateRequest;
 import com.gordeev.taskmanager.tasks.dto.TaskResponse;
 import com.gordeev.taskmanager.tasks.service.TaskService;
@@ -23,19 +24,19 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@AuthenticationPrincipal(expression = "id") UUID currentUserId, @RequestBody @Valid TaskCreateRequest request) {
-        TaskResponse result = taskService.createTask(currentUserId, request);
+    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@AuthenticationPrincipal CustomUserDetails currentUser, @RequestBody @Valid TaskCreateRequest request) {
+        TaskResponse result = taskService.createTask(currentUser, request);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<TaskResponse>>> getTasks(
-            @AuthenticationPrincipal(expression = "id") UUID currentUserId,
+            @AuthenticationPrincipal CustomUserDetails currentUser,
             @RequestParam(required = false) String name,
             @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        PageResponse<TaskResponse> result = taskService.getTasks(currentUserId, name, pageable);
+        PageResponse<TaskResponse> result = taskService.getTasks(currentUser, name, pageable);
 
         return ResponseEntity.ok(ApiResponse.success(result));
     }

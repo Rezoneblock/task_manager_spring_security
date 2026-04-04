@@ -2,6 +2,7 @@ package com.gordeev.taskmanager.tasks.service;
 
 import com.gordeev.taskmanager.common.dto.PageResponse;
 import com.gordeev.taskmanager.common.exception.ResourceDoesNotExistException;
+import com.gordeev.taskmanager.common.security.CustomUserDetails;
 import com.gordeev.taskmanager.tasks.dto.TaskCreateRequest;
 import com.gordeev.taskmanager.tasks.dto.TaskResponse;
 import com.gordeev.taskmanager.tasks.entity.Task;
@@ -28,17 +29,17 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     @Transactional
-    public TaskResponse createTask(UUID currentUserId, TaskCreateRequest request) {
+    public TaskResponse createTask(CustomUserDetails currentUser, TaskCreateRequest request) {
         Task task = taskMapper.toTask(request);
 
-        task.setUser(userRepository.getReferenceById(currentUserId));
+        task.setUser(userRepository.getReferenceById(currentUser.getId()));
 
         Task saved = taskRepository.save(task);
 
-        return taskMapper.toResponse(saved);
+        return taskMapper.toResponse(saved, currentUser.getUsername());
     }
 
-    public PageResponse<TaskResponse> getTasks(UUID currentUserId, String name, Pageable pageable) {
+    public PageResponse<TaskResponse> getTasks(CustomUserDetails currentUser, String name, Pageable pageable) {
         Page<Task> page;
 
         if (name != null && !name.isEmpty()) {
@@ -47,10 +48,10 @@ public class TaskService {
                 throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, name));
             }
         } else {
-            page = taskRepository.findByUserId(currentUserId, pageable);
+            page = taskRepository.findByUserId(currentUser.getId(), pageable);
         }
 
-        Page<TaskResponse> responsePage = page.map(taskMapper::toResponse);
+        Page<TaskResponse> responsePage = page.map(task -> taskMapper.toResponse(task, currentUser.getUsername()));
 
         return new PageResponse<>(
                 responsePage.getContent(),

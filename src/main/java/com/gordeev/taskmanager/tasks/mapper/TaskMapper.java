@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
-    TaskResponse toResponse(Task task);
+    @Mapping(target = "username", source = "username")
+    TaskResponse toResponse(Task task, String username);
 
     @Mapping(target = "done", constant = "false")
     Task toTask(TaskCreateRequest request);
