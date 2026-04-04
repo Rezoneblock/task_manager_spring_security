@@ -65,11 +65,10 @@ public class TaskService {
     }
 
     @Transactional
-    public void deleteTask(Long id) {
-        if (!taskRepository.existsById(id)) {
-            throw new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, id));
-        }
+    public void deleteTask(CustomUserDetails currentUser, Long id) {
+        Task task = taskRepository.findByIdAndUserId(id, currentUser.getId()).orElseThrow(
+                () -> new ResourceDoesNotExistException(String.format(TASK_NOT_FOUND, id)));
 
-        taskRepository.deleteById(id);
+        taskRepository.delete(task);
     }
 }
