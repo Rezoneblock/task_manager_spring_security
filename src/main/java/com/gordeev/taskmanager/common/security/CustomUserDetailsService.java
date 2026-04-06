@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
 
         Collection<? extends GrantedAuthority> authorities =
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+                List.of(new SimpleGrantedAuthority(user.getRole()));
 
         return new CustomUserDetails(user, authorities);
     }
