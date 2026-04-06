@@ -2,6 +2,7 @@ app:
   admin:
     username: ${APP_ADMIN_USERNAME}
     password: ${APP_ADMIN_PASSWORD}
+    initPassword: ${APP_ADMIN_INITPASSWORD}
     email: ${APP_ADMIN_EMAIL}
 
 jwt:

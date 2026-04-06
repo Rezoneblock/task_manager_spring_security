@@ -20,18 +20,21 @@ public class DataInitializer implements CommandLineRunner {
     @Value("${app.admin.password}")
     private String adminPassword;
 
+    @Value("${app.admin.initPassword}")
+    private String adminInitPassword;
+
     @Value("${app.admin.email}")
     private String adminEmail;
 
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.findByUsername(adminUsername).isEmpty()) {
-            String actualPassword = adminPassword.isBlank() ? "TempPassword12345!" : adminPassword;
+            String actualPassword = adminPassword.isBlank() ? adminInitPassword : adminPassword;
 
             User admin = User.builder()
                     .username(adminUsername)
                     .email(adminEmail)
-                    .password(passwordEncoder.encode(adminPassword))
+                    .password(passwordEncoder.encode(actualPassword))
                     .role("ADMIN")
                     .build();
 
