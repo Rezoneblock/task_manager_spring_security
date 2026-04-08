@@ -1,0 +1,68 @@
+version: '3.9'
+
+secrets:
+  db-password:
+    external: true
+  app-admin-username:
+    external: true
+  app-admin-password:
+    external: true
+  app-admin-initpassword:
+    external: true
+  app-admin-email:
+    external: true
+  jwt-secret-key:
+    external: true
+  jwt-expiration:
+    external: true
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    secrets:
+      - db-password
+    environment:
+      POSTGRES_DB: taskmanager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  task-manager:
+    image: task-manager:1.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 5s
+    secrets:
+      - db-password
+      - app-admin-username
+      - app-admin-password
+      - app-admin-initpassword
+      - app-admin-email
+      - jwt-secret-key
+      - jwt-expiration
+    environment:
+      db-server: postgres
+      db-port: 5432
+      db-name: taskmanager
+      db-username: postgres
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "80:8080"
+    depends_on:
+      - postgres
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+    driver: overlay

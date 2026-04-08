@@ -1,0 +1,17 @@
+.git
+.gitignore
+README*
+LICENSE
+*.md
+.dockerignore
+
+src/test/
+
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+*.log
+target/
+!target/*.jar
