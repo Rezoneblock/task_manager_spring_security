@@ -42,10 +42,10 @@ public class DataInitializer implements CommandLineRunner {
 
             System.out.println("=============================================");
             System.out.println("Администратор программы успешно создан: " + adminUsername);
-            System.out.println("=============================================");
             if (adminPassword.isBlank()) {
                 System.err.println("ВНИМАНИЕ: Администратору задан пароль по-умолчанию, необходимо сменить его!");
             }
+            System.out.println("=============================================");
         } else {
             System.out.println("=============================================");
             System.out.println("Администратор программы: " + adminUsername);
